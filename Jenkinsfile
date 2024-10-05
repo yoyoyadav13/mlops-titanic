@@ -1,26 +1,29 @@
 pipeline {
     agent any
+
     stages {
-        stage('Clone Repository') {
+        stage('Setup Environment') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/master']],
-                    userRemoteConfigs: [[
-                        url: 'git@github.com:yoyoyadav13/mlops-titanic.git',
-                        credentialsId: 'github-credentials'  // Use your GitHub credentials ID here
-                    ]]
-                ])
+                echo 'Setting up environment...'
+                sh 'pip install -r requirements.txt'  // Install dependencies
             }
         }
         stage('Data Preprocessing') {
             steps {
-                // Your data preprocessing steps
+                echo 'Running data preprocessing...'
+                sh 'python preprocess.py'  // Run your preprocessing script
             }
         }
         stage('Train Model') {
             steps {
-                // Your model training steps
+                echo 'Training the model...'
+                sh 'python train.py'  // Run your training script
+            }
+        }
+        stage('Deploy Model') {
+            steps {
+                echo 'Deploying the model...'
+                sh 'python deploy.py'  // Run your deployment script
             }
         }
     }
