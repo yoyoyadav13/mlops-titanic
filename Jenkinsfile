@@ -2,6 +2,22 @@ pipeline {
     agent any
 
     stages {
+        stage('Verify Git Version') {
+            steps {
+                script {
+                    def gitVersion = sh(script: 'git --version', returnStdout: true).trim()
+                    echo "Git version: ${gitVersion}"
+                }
+            }
+        }
+        stage('Clone Repository') {
+            steps {
+                script {
+                    // Clone your repository
+                    sh 'git clone https://github.com/yourusername/your-repo.git'  // Replace with your repo URL
+                }
+            }
+        }
         stage('Setup Environment') {
             steps {
                 echo 'Setting up environment...'
